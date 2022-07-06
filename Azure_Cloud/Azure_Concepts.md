@@ -46,3 +46,19 @@ Integrates on-premises AD with Azure AD.
 - A subscription trusts Azure AD to authenticate users, services, and devices.
 - Multiple subscriptions can trust/associate with the same Azure AD directory, but one subscription can only associate with a single directory.
 
+
+# Azure Disks
+• Azure Disk Storage offers high-performance, highly durable block storage
+   for our mission- and business-critical workloads
+• We can mount these volumes as devices on our Virtual Machines & Container 
+    instances.
+• Cost-effective storage
+    • Built-in bursting capabilities to handle unexpected traffic and process batch 
+       jobs
+• Unmatched resiliency
+    • 0 percent annual failure rate for consistent enterprise-grade durability
+• Seamless scalability
+    • Dynamic scaling of disk performance on Ultra Disk Storage without disruption
+• Built-in security
+    • Automatic encryption to help protect your data using Microsoft-managed keys 
+       or your own
