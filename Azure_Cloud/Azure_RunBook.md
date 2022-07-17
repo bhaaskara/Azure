@@ -37,6 +37,12 @@ Its new feature allows to do bulk operations.
 Click on bulk invite -> download template (CSV) -> update -> upload -> invite bulk people to Azure AD.
 
 # Storage
+## Create a Storage account
+![](Pasted%20image%2020220713124815.png)
+Page blobs: VM Disks or Disks for SQL DB
+![](Pasted%20image%2020220713124911.png)
+![](Pasted%20image%2020220713125027.png)
+
 ## Object replication
 ### Create replication rule
 ![](Pasted%20image%2020220713121038.png)
@@ -50,8 +56,22 @@ Copy over: Only new objects are copied over by default and can be changed to cop
           ![](Pasted%20image%2020220713121834.png)
   Ref: LAB: https://github.com/MicrosoftLearning/AZ-104-MicrosoftAzureAdministrator/blob/master/Instructions/Labs/LAB_07-Manage_Azure_Storage.md
 
-          
+## Create Azure file share
+
 # Networking
+## Create a VNET
+Portal -> Virtual networks
+![](Pasted%20image%2020220714121418.png)
+![](Pasted%20image%2020220714121608.png)
+So this VNET can have 255 subnets with 251 IPs in each subnet.
+
+VNET with multiple addresses spaces
+![](Pasted%20image%2020220714122843.png)
+
+Add a subnet
+![](Pasted%20image%2020220714121813.png)
+
+
 ## Create Static Public IP
 
 ```
