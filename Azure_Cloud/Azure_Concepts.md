@@ -12,7 +12,7 @@ A way to separating out projects, keeping unrelated things separate
 ![](Pasted%20image%2020220712130405.png)
 RGs will have a location, but its logical and the resources in it can be from any location.
 
-## RG Lock
+### RG Lock
 Azure portal -> RG -> Locks
 Adding a lock prevents users from doing the activity.
 
@@ -37,6 +37,7 @@ Azure Policy helps to enforce organizational standards and to assess compliance.
 - Not allowed resource types
 
 Policies can be assigned to RGs, Subscription or Individual resources.
+It takes 30min for the policy to be affective.
 
 **Note:** after applying the policy if its state is not started, then start it from Powershell / CLI
 ```
@@ -86,7 +87,7 @@ Integrates on-premises AD with Azure AD.
 ![](Pasted%20image%2020220613115440.png)
 - An Azure subscription has a trust relationship with Azure Active Directory (Azure AD). 
 - A subscription trusts Azure AD to authenticate users, services, and devices.
-- Multiple subscriptions can trust/associate with the same Azure AD directory, but one subscription can only associate with a single directory.
+- Multiple subscriptions can trust/associate with the same Azure AD directory, but one subscription can only associate with one directory.
 
 ## Basic concepts of Account and subscriptions
 ### Account / User
@@ -98,18 +99,18 @@ A person or a program
   Represents a program or service
 
 ### Tenant
+A dedicated instance of Azure Active Directory
 A representation of an organization
 Usually represented by a public domain name - i.e. example.com
 Will be assigned a domain if not specified - i.e. example.onmicrosoft.com
-A dedicated instance of Azure Active Directory
 Every Azure Account is part of at least one tenant
 
 Check your tenant details under user
 ![](Pasted%20image%2020220712121719.png)
 
 ### Subscription
-An agreement with Microsoft to use Azure services, and how you're going to pay for that
-All Azure resource usage gets billed to the payment method of the subscription
+An agreement with Microsoft to use Azure services, and how you're going to pay for that.
+All Azure resource usage gets billed to the payment method of the subscription.
 - Free subscriptions
 - Pay as you go
 - Enterprise agreements
@@ -118,9 +119,10 @@ All Azure resource usage gets billed to the payment method of the subscription
                 So tenant with out a subscription can not create any resources.
           Tenant can have multiple subscriptions
           More than one account can be the owner in a tenant.
+          The `Usage + quota` under subscription will show the resources you can create under your subscription.
 
 ## RBAC
-In Azure authentication is managed by Azure AD and authorization is managed by RBAC Roles.
+In Azure, authentication is managed by Azure AD and authorization is managed by RBAC Roles.
 
 ### Roles and Administrators
 Every Azure AD account(tenant) will have a global admin.
@@ -136,7 +138,7 @@ Owner - can work with resources in RG and grant permission to other users to wor
 Contributor - can work (read and update) with resources but can't grant permissions to other users
 Reader - only view access on RG
 
-**Note:** Role can be assigned to a user or group at individual resource level, RG or Subscription level. To do so go to that perticular resource in Azure portal -> IAM and assign a role.
+**Note:** Role can be assigned to a user or group at individual resource level, RG or Subscription level. To do so go to that particular resource in Azure portal -> IAM and assign a role.
 
 ### Custom roles
 Custom roles need Azure AD Premium (P1/P2) subscription.
@@ -144,6 +146,201 @@ Custom roles need Azure AD Premium (P1/P2) subscription.
 Custom roles can be created from Azureportal -> Azure AD -> IAM
 or Portal -> RG -> IAM -> Custom roles
 
+## Ref:
+https://docs.microsoft.com/en-us/azure/active-directory/fundamentals/
+
+# Azure Compute 
+## VMs
+### Azure Disks for VMs
+- Azure managed disks
+- 99.999% availability
+- Support with features such as Availability zones, Azure backup etc..
+
+**Data Disk Types**
+**Standard HDD**
+- Ideal for backup environment and non-critical workloads.
+- Max size - 32,767 GiB
+- Max through put 500 MBPS
+- Max IOPS 2000
+
+**Standard SSD**
+This is ideal for Web Servers 
+and Dev/Test Environments. 
+Max disk size - 32,767 GiB 
+Max throughput - 750 MB/s 
+Max lops - 6000. 
+
+**Premium SSD**
+This is ideal for Production 
+environments. 
+Max disk size - 32,767 GiB 
+Max throughput — 950 MB'S 
+Max lops - 20,000. 
+
+**Note:** Not all VM sizes support premium disks.
+          Check it under VM sizes
+
+**Ultra disk**
+This is ideal for 10 intensive workloads — SQL , Oracle databases. 
+Max disk size — 65,536 GiB 
+Max throughput — 4000 MB/s 
+Max lops -160,000. 
+
+### Attach a data disk to a VM
+1. Create and attach a data disk in azure portal
+2. on the windows VM -> server manager -> initialize new volume -> create new volume
+
+### Azure Disk encryption
+By default the OS Disks and Data disks are encrypted with SSE (Server Side Encryption) with PMK (Platform Managed Key).
+if you want to encrypt the disks at OS level (DM crypt for Linux and Bitlocker for Windows) you can use ADE with User keys.
+It uses Keys from Azure Key vault for user keys.
+    you have to import or create a key in Key valut
+    Assign the policy for Vm encryption to access key valut
+
+### IOPS and Through put
+IOPS - input/output operations per second
+           DBs will have lot of IOPS
+Through put - Amount of Data being sent to disk in specified interval
+                       Video streaming apps will have lot of data being sent/read.
+
+### Azure Shared Disks
+This allows a managed disk to be attached to multiple virtual machines.
+Used for clustered SQL server workloads
+There are restrictions, can only be enable for Premium and Ultra disks.
+
+**Note:** Create a manged disk and enable sharing in advanced options
+           Attach the disk on to VM
+           and Before attaching the shared disk to another VM, the first VM should be stopped.
+           Need MPIO software to manage the shared disks
+
+### Unmanaged Disks
+Unmanaged disks nothing but your Azure storage service (i.e blob storage, file shares etc)
+Unmanaged disks are charged per usage (i.e thin volumes).
+VM can't have both managed and unmanaged disks
+Need storage account to use unmanaged disks.
+
+Once you enable unmanaged disks in Vm -> Storage -> advanced options
+your OS disk will be stored in storage account.
+The Storage account type and OS disk type should match.
+
+### Custom script extensions
+33,34 - # [AZ-104 Microsoft Azure Administrator Certification 2022](https://www.udemy.com/course/microsoft-certified-azure-administrator/)
+
+
+### Linux VM - Custom data and Cloud Init
+Azure -> VM -> Advanced options
+![](Pasted%20image%2020220720131125.png)
+Note: allow port 80 (required ports depend on the softwares) in NSG.
+
+### Boot Diagnostics
+Azure -> VM -> Support + trouble shooting
+
+Helps in finding out the boot isues.
+Shows system screen shot.
+View and download the serial log.
+
+### Serial console
+Azure -> VM -> Serial console
+
+Allows the serial console access to the VM.
+Need custom boot diagnostics storage account.
+
+To login use
+```sh
+cmd       # Create cmd session
+ch -si 1  # connect to that session
+```
+
+### Run command
+![](Pasted%20image%2020220720132509.png)
+![](Pasted%20image%2020220720132539.png)
+
+### Azure Confidential Computing
+
+This is a feature that allows you to isolate sensitive data when it is being processed in the cloud.
+
+This feature is available for your virtual machines. In Confidential computing , a part of the CPU’s hardware is reserved for the portion of code and data in your application. This portion is known as an enclave.
+
+There is a special series of virtual machines which support confidential computing. This is the DCsv2-Series
+
+[https://docs.microsoft.com/en-us/azure/virtual-machines/dcv2-series](https://docs.microsoft.com/en-us/azure/virtual-machines/dcv2-series)
+
+These series of virtual machines are built on Intel SGX technology for hardware-based enclaves.
+
+To actually ensure that your code or application runs inside the enclave, you will have to program it accordingly.
+
+For this you need to use two open-source frameworks
+
+a) Open Enclave Software Development Kit
+
+[https://github.com/openenclave/openenclave](https://github.com/openenclave/openenclave)
+
+·b)Confidential Consortium Framework
+
+[https://github.com/Microsoft/CCF](https://github.com/Microsoft/CCF)
+
+ ### Azure Dedicated Hosts
+
+This service provides physical servers to host virtual machines. The physical server is dedicate to the Azure subscription.
+
+The benefits of Azure Dedicated Hosts is that no other virtual machines from any other customers would be placed on the physical server.
+
+You can also control the maintenance events that are initiated on the Azure platform.
+
+Here the users are charged per dedicated host. This is irrespective of the number of virtual machines running on the physical server
+
+For more information on Azure Dedicated Hosts , you can visit the URL - [https://docs.microsoft.com/en-us/azure/virtual-machines/windows/dedicated-hosts](https://docs.microsoft.com/en-us/azure/virtual-machines/windows/dedicated-hosts)
+
+### Azure Bastion service
+![](Pasted%20image%2020220720133235.png)
+Bastion subnet should be named as AzureBastionSubnet
+
+Azure -> Vm -> Connect -> Bastion
+if it not exists it ask you to create one.
+now you can connect to your VM via browser with out public ip for a VM.
+
+### Reset Password
+Azure -> VM -> support and trouble shooting -> reset password
+
+### Redeploy and Reapply
+Azure -> VM -> support and trouble shooting -> redeploy + reapply
+![](Pasted%20image%2020220720144930.png)
+
+### Availability Sets
+When you host your virtual machines in Azure, you sometimes need to cater to the following
+
+1.  An unplanned event wherein the underlying infrastructure fails unexpectedly. The failures could be attributed to network failures , local disk failures or even rack failures.
+2.  Planned maintenance events , wherein Microsoft needs to make planned updates to the underlying physical environment. In such cases , a reboot might be required on your virtual machine.
+    
+You can increase the availability of your application by making use of availability sets. Each virtual machine that is assigned to the availability set is assigned a separate fault and update domain.
+
+**Fault domains** are used to define the group of virtual machines that share a common source and network switch. You can have up to 3 fault domains.
+
+**Update domains** are used to group virtual machines and physical hardware that can be rebooted at the same time. You can have up to 20 update domains.
+
+**Note:** VMs can be added to the availability set only while creating them.
+           There is no extra cost involved with Availability sets.
+           ![](Pasted%20image%2020220720194020.png)
+           
+### Availability Zones
+-   This features help provides better availability for your application by protecting them from datacenter failures.
+-   Each Availability zone is a unique physical location in an Azure region.
+-   Each zone comprises of one or more data centers that has independent power, cooling, and networking
+-   Hence the physical separation of the Availability Zones helps protect applications against data center failures
+-   Using Availability Zones, you can be guaranteed an availability of 99.99% for your virtual machines. You need to ensure that you have 2 or more virtual machines running across multiple availability zones.
+- There is extra for communication bandwidth across the VMs across the zones.
+
+### Scale sets
+- Scale set scale out/scale in the number of VMs based on rules
+- Its user responsibility to configure the app after the VMs scale out.
+
+## Proximity Placement Groups
+![](Pasted%20image%2020220720201854.png)
+
+![](Pasted%20image%2020220720201952.png)
+
+## App service
+## Functions logic app
 # Azure Storage
 ![](Pasted%20image%2020220712154453.png)
 
@@ -415,7 +612,7 @@ create alerts - 273 -  [AZ-104 Microsoft Azure Administrator Certification 2022]
 To get the logs from a VM
 - Create log analytics workspace
 - Connect the VM
-- to connect a individual server download and install the agent and configure it in log anakytics work space.
+- to connect a individual server download and install the agent and configure it in log analytics work space.
 - It takes 30 min to populate/collect the data
 
 ### Create a log analytics workspace
@@ -442,3 +639,40 @@ Page views and their load performance as reported from the user's browser.
 User and session counts.
 Performance counters of the underlying Windows or Linux Machines.
 Diagnostic trace logs from your application.
+
+# Service or Resource limits
+We have already learnt on using services such as the Virtual Machine service. Now when using services it is important to understand that you have limits on how many resources you can create per service.
+
+Let's understand the limit we have for Virtual Machines
+
+1) First go to your subscriptions
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-04-13_05-19-43-c71bc0d1a009ea1125f70c1e15631181.jpg)
+
+2) Then go to your subscription
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-04-13_05-20-37-78b532bf9084234512019f357c53c04b.jpg)
+
+3) For the subscription , go to Usage + quotas
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-04-13_05-21-48-2bee91afc4b9115d6d567d06daf2373b.jpg)
+
+4) In the right pane, then go to the "Select a provider" and choose Microsoft.Compute
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-04-13_05-24-50-978255d034e9b325d89ac6bd34f06799.jpg)
+
+You will then see the quotas
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-04-13_05-26-48-143587bd96576bee23e73fbef71ddfc3.jpg)
+
+So here , we have the Total Regional vCPUs quota for the West US region. I had gone ahead and create a virtual machine with 2 vCPU in the West US region, and that is why it shows that i have consumed 2 vCPUs out of 10 vCPUs in my quota.
+
+Hence in the West US region, i can only spin up virtual machines that would together only have a maximum of 10 vCPUs.
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-04-13_05-28-53-90c2d6dabebe5ed910d1e60adc16f096.jpg)
+
+If you want an increase in the quota limit, you can request an increase from Azure support
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-04-13_05-30-44-0c7c3a751469db79e56ab8b4b92bfd41.jpg)
+
+For more information on service limits , one can visit the URL - [https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits](https://docs.microsoft.com/en-us/azure/azure-resource-manager/management/azure-subscription-service-limits)
