@@ -44,3 +44,11 @@ Once its approved by the reviewer
 Go to pull request and complete the merge
 ![](Pasted%20image%2020220718231505.png)
 ![](Pasted%20image%2020220718231523.png)
+
+# Pipeline
+## Create a build pipeline
+**Azure DevOps - Build and Push Docker Image to Azure Container Registry**
+https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/19-Azure-DevOps-with-AKS/19-01-Azure-DevOps-BuildandPush-to-ACR
+
+## Build pipeline - Task to deploy on AKS
+![](Pasted%20image%2020220722210150.png)

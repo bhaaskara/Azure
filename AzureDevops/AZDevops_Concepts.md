@@ -16,7 +16,15 @@ Azure DevOps provides developer services that allows organizations to create and
 - **Azure test plans**
     - provides several tools to test your apps, including manual/exploratory testing and continuous testing.
 
-## Azure Boards
+# Organization / Project
+Organization is collection of related projects.
+All the azure devops components will be under the project.
+
+Once you signup or sign in with your azure credentials to Azure DevOps you get an default organization and you can create organizations too.
+Use your work or school account to _automatically connect_ your organization to your Azure Active Directory (Azure AD).
+All organizations must be manually created via the web portal.
+
+# Azure Boards
 - Azure Boards is a service for managing the work for your software projects.
 - Azure Boards brining you a rich set of capabilities including native support for Scrum and
    Kanban, customizable dashboards, and integrated reporting.
@@ -43,8 +51,14 @@ Sprints give you the ability to create increments of work for your team to accom
 **Dashboard**
 Azure dashboards comes with a rich canvas for creating dashboards. Add widgets as needed to track progress and directions.
 
-## Azure pipe line
+# Azure pipe line
 https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops
+https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/key-pipelines-concepts?view=azure-devops
+
+
+![](Pasted%20image%2020220723001823.png)
+
+![](Pasted%20image%2020220723002012.png)
 
 # Continuous Integration
 ```
@@ -53,8 +67,7 @@ which get the code from GIT and build the code and publish the artifacts.
 ```
 Bug fixes or feature developments on feature branches will be merged on to master/main branch through pull requests.
 
-## Azure Pipelines
-### Create a New pipeline
+## Create a New Build pipeline
 Azure Devops -> Project -> Pipelines -> Create/New pipeline
 ![](Pasted%20image%2020220716230328.png)
 
@@ -82,7 +95,7 @@ steps:
 
 ![](Pasted%20image%2020220716232050.png)
 
-To edit the pipeline yaml goto pipeline and click edit.
+To edit the pipeline yaml, go to pipeline and click edit.
 
 ### Publish build artifacts
 In pipeline yaml add `publish build artifacts` step
@@ -90,11 +103,11 @@ In pipeline yaml add `publish build artifacts` step
 ![](Pasted%20image%2020220717180713.png)
 ![](Pasted%20image%2020220717180756.png)
 
-### Agent pool
+## Agent pool
 - Microsoft hosted agents
 - Self hosted agents
 
-#### Self hosted agent pool
+### Self hosted agent pool
 1. Create a VM in Azure
 2. Install Azure pipe line agent
 3. Install required tools
@@ -103,10 +116,9 @@ In pipeline yaml add `publish build artifacts` step
     3. python etc..
 
 **1. Create a VM in Azure**
-Create a VM with all default options and can be any region
+    Create a VM with all default options and can be any region.
 
 **2. Install Azure pipeline agent**
-
 Azure devops -> Project settings -> Pipelines -> Agent pools
 ![](Pasted%20image%2020220717120014.png)
 Azure pipelines - Is used for Microsoft hosted agent pool.

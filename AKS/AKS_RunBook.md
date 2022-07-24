@@ -75,6 +75,17 @@ kubectl get nodes
 kubectl get nodes -o wide
 ```
 
+# Build and Push Docker image to ACR and Deploy to AKS Using Azure Devops
+![](Pasted%20image%2020220722122310.png)
+
+Build pipeline - Task to deploy on AKS
+![](Pasted%20image%2020220722210150.png)
+
+
+# Build Pipeline scenario 1
+![](Pasted%20image%2020220723002940.png)
+https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/19-Azure-DevOps-with-AKS/19-03-Azure-DevOps-Build-Pipeline-Publish-Artifacts
+
 # AKS Trouble shooting
 ## Activity log
 Azure portal -> AKS -> <cluster> -> Activity log
