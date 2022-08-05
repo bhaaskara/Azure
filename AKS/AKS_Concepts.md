@@ -12,8 +12,7 @@ AKS is highly available, secure and fully managed k8s service.
 - With ACR, we can simplify our container lifecycle management. 
 - Geo-replication to efficiently manage a single registry across multiple regions 
 - Automated container building and patching including base image updates and task scheduling 
-- Integrated security with Azure Active Directory (Azure AD) authentication, role-based access control, Docker Content Trust and virtual network 
-integration.
+- Integrated security with Azure Active Directory (Azure AD) authentication, role-based access control, Docker Content Trust and virtual network integration.
 
 ## ACR Pricing tiers
 ![](Pasted%20image%2020220721003240.png)
@@ -120,3 +119,117 @@ https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/21-Azu
 
 # AKS Autoscaling
 https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/22-Azure-AKS-Autoscaling
+
+# AKS Virtual nodes (server less)
+![](Pasted%20image%2020220724192911.png)
+
+## Virtual Kubelet
+- Virtual Kubelet is an open source Kubernetes kubelet implementation that acts as a kubelet for the purposes of connecting Kubernetes to other APIs. 
+- This allows the k8s worker nodes to be backed by other services like Azure ACI and AWS Fargate 
+- The primary scenario for VK is enabling the extension  of the Kubernetes API into serverless container platforms like Azure ACI and AWS Fargate.
+
+![](Pasted%20image%2020220724195944.png)
+
+**Current Features** 
+- Create, delete and update pods 
+- Container logs, exec, and metrics 
+- get pod, pods and pod status 
+- capacity 
+- node addresses, node capacity, node daemon endpoints 
+- operating system 
+- bring your own virtual network 
+
+## What is ACI (Azure Container Instance)
+• Azure Container Instances (ACI) provide a hosted environment for running containers in Azure. 
+•When using ACI, there is no need to manage the underlying compute infrastructure, Azure handles 
+this management for you. 
+• When running containers in ACI, you are charged per second for each running container
+
+## Kubernetes Virtual Kubelet with Azure ACI
+• The Azure Container Instances (ACI) provider for the Virtual Kubelet configures an ACI instance as a node 
+in any Kubernetes cluster. 
+• When using the Virtual Kubelet ACI provider, pods can be scheduled on an ACI instance as if the 
+ACI instance is a standard Kubernetes node. 
+•This configuration allows you to take advantage of both the capabilities of Kubernetes and the management value and cost benefit of ACI. 
+
+**Virtual Kubelet's ACI provider - Features** 
+• Volumes: empty dir, github repo, Azure Files 
+• Secure env variables, config maps 
+• Bring your own virtual network (VNet) 
+• Network security group support 
+• Basic Azure Networking support within AKS virtual node 
+• Exec support for container instances 
+• Azure Monitor integration or formally known as OMS 
+
+## Azure AKS Virtual nodes (Server Less)
+• We can run our Kubernetes workloads on Serverless Infrastructure of 
+Azure which is called Virtual Nodes 
+• Advantages 
+    • Scale our applications rapidly without any limitations 
+    • Quick Provisioning of pods using Virtual Nodes when compared to cluster 
+autoscaler. 
+    • Cluster Autoscaler need to provision the Nodes in a managed node pool first 
+then only Kubernetes can schedule pods on those newly provisioned nodes. 
+• Limitations (Huge and Many) 
+https://docs.microsoft.com/en-us/azure/aks/virtual-nodes-cli#known- 
+limitations 
+
+![](Pasted%20image%2020220724201744.png)
+
+![](Pasted%20image%2020220724201828.png)
+
+
+# Production grade AKS cluster with Azure CLI
+https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/23-AKS-Production-Grade-Cluster-Design-using-az-aks-cli
+
+![](Pasted%20image%2020220724123424.png)
+
+- ACR is connected through service principle or directly attaching to the AKS
+- Azure monitor will be enabled by default if the cluster is created through portal.
+   Azure monitor plugin should be enabled manually if cluster is created through CLI.
+
+- Load balancer is very important to have enough IPs or bandwidth for outbound traffic.
+- System assigned managed identity is super set of all other identity systems and is more recommended.
+
+![](Pasted%20image%2020220724152637.png)
+
+## Create AKS cluster using CLI
+https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/23-AKS-Production-Grade-Cluster-Design-using-az-aks-cli/23-01-Create-AKSCluster-with-az-aks-cli
+
+![](Pasted%20image%2020220724153124.png)
+
+## Node pools
+![](Pasted%20image%2020220724153227.png)
+
+## Deploy apps to different node pools
+![](Pasted%20image%2020220724153454.png)
+
+
+# AKS - Multiple clusters
+https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/21-Azure-AKS-Authentication-and-RBAC/21-01-AKS-Cluster-Access-Multiple-Clusters
+
+```sh
+# configure AKSDEM03 & 4 access
+az aks get-credentials --resource-group aks-rg3 --name <aksdemo3(clustername)>
+az aks get-credentials --resource-group aks-rg4 --name <aksdemo3(clustername)>
+```
+
+View kube config
+`kubectl config view`
+
+## Context
+![](Pasted%20image%2020220802212151.png)
+
+`kubectl config current-context` # View context
+`kubectl config use-context aksdemo3` # Switch context
+
+
+# AKS - Storage
+https://docs.microsoft.com/en-us/azure/aks/concepts-storage
+https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-storage
+
+# AKS - Best practices for BCP and DR
+https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-multi-region
+
+# AKS - Workload and API objects backup
+https://docs.microsoft.com/en-us/azure-stack/aks-hci/backup-workload-cluster

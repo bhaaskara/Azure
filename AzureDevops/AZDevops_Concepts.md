@@ -1,7 +1,7 @@
-# What is Azure Devops
+# What is Azure DevOps
 Azure DevOps provides developer services that allows organizations to create and improve products at a faster pace than they can with traditional software development approaches.
 
-# Components of Azure Devops
+# Components of Azure DevOps
 - **Azure boards**
     - delivers a suite of Agile tools to support planning and tracking work, code defects, and issues using Kanban and Scrum methods.
     - Helps in planning, tracking and working with work items across teams.
@@ -18,7 +18,7 @@ Azure DevOps provides developer services that allows organizations to create and
 
 # Organization / Project
 Organization is collection of related projects.
-All the azure devops components will be under the project.
+All the azure DevOps components will be under the project.
 
 Once you signup or sign in with your azure credentials to Azure DevOps you get an default organization and you can create organizations too.
 Use your work or school account to _automatically connect_ your organization to your Azure Active Directory (Azure AD).
@@ -300,7 +300,7 @@ https://docs.microsoft.com/en-us/azure/devops/pipelines/yaml-schema/?view=azure-
 https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
 
 # Azure Repos
-with Azure Repos you can Git or Team foundation version control system.
+with Azure Repos you can use Git or Team foundation version control system.
 
 # Azure Artifacts
 This service allows you to create and share Maven(java), npm(node JS) and NuGet(.net) package 

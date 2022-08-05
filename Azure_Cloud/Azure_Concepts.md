@@ -181,7 +181,7 @@ Max lops - 20,000.
           Check it under VM sizes
 
 **Ultra disk**
-This is ideal for 10 intensive workloads — SQL , Oracle databases. 
+This is ideal for IO intensive workloads — SQL , Oracle databases. 
 Max disk size — 65,536 GiB 
 Max throughput — 4000 MB/s 
 Max lops -160,000. 
@@ -194,8 +194,8 @@ Max lops -160,000.
 By default the OS Disks and Data disks are encrypted with SSE (Server Side Encryption) with PMK (Platform Managed Key).
 if you want to encrypt the disks at OS level (DM crypt for Linux and Bitlocker for Windows) you can use ADE with User keys.
 It uses Keys from Azure Key vault for user keys.
-    you have to import or create a key in Key valut
-    Assign the policy for Vm encryption to access key valut
+    you have to import or create a key in Key vault
+    Assign the policy for VM encryption to access key vault
 
 ### IOPS and Through put
 IOPS - input/output operations per second
@@ -219,7 +219,7 @@ Unmanaged disks are charged per usage (i.e thin volumes).
 VM can't have both managed and unmanaged disks
 Need storage account to use unmanaged disks.
 
-Once you enable unmanaged disks in Vm -> Storage -> advanced options
+Once you enable unmanaged disks in VM -> Storage -> advanced options
 your OS disk will be stored in storage account.
 The Storage account type and OS disk type should match.
 
@@ -314,13 +314,16 @@ When you host your virtual machines in Azure, you sometimes need to cater to the
     
 You can increase the availability of your application by making use of availability sets. Each virtual machine that is assigned to the availability set is assigned a separate fault and update domain.
 
-**Fault domains** are used to define the group of virtual machines that share a common source and network switch. You can have up to 3 fault domains.
+**Fault domains** are used to define the group of virtual machines that share a common power source and network switch. You can have up to 3 fault domains.
 
 **Update domains** are used to group virtual machines and physical hardware that can be rebooted at the same time. You can have up to 20 update domains.
 
 **Note:** VMs can be added to the availability set only while creating them.
            There is no extra cost involved with Availability sets.
            ![](Pasted%20image%2020220720194020.png)
+           You need to create virtual machines in the same resource group as the availability set.
+           One virtual machine can only be in one availability set.
+           You should create separate storage accounts for each virtual machine.
            
 ### Availability Zones
 -   This features help provides better availability for your application by protecting them from datacenter failures.
@@ -329,6 +332,14 @@ You can increase the availability of your application by making use of availabil
 -   Hence the physical separation of the Availability Zones helps protect applications against data center failures
 -   Using Availability Zones, you can be guaranteed an availability of 99.99% for your virtual machines. You need to ensure that you have 2 or more virtual machines running across multiple availability zones.
 - There is extra for communication bandwidth across the VMs across the zones.
+
+```
+availability sets are used to protect applications from hardware failures within an Azure data center, availability zones, protect applications from complete Azure data center failures.
+
+An availability zone is a unique physical location that exists within an Azure region. Every availability zone contains at least one data center within the region. Each of these data centers has its own power, its own networking, and its own cooling. To ensure resiliency, every enabled region in Azure consists of at least three separate zones that are physically separated. It is this physical separation that protects applications from data center failures.
+
+Like availability sets, availability zones consist of fault domains and update domains. However, unlike availability sets, an availability zone consists of a single fault domain and a single update domain. Deploying three or more VMs across three availability zones within an Azure region will cause Azure to split those VMs across three different fault domains and three different update domains to ensure that the virtual machines in different zones are never updated at the same time.
+```
 
 ### Scale sets
 - Scale set scale out/scale in the number of VMs based on rules
@@ -339,9 +350,54 @@ You can increase the availability of your application by making use of availabil
 
 ![](Pasted%20image%2020220720201952.png)
 
-## App service
+## Azure App service (Web Apps)
+![](Pasted%20image%2020220726153037.png)
+Note:  Underlying VMs can be of Linux or Windows but can't be mixed.
+          Custom or Vendor based application may not be able to deploy on to App Service, in this case you can deploy on to VM.
+
+### App Service Plan (Pricing)
+![](Pasted%20image%2020220726153506.png)
+
+![](Pasted%20image%2020220726153448.png)
+App Service plan can be either Linux or windows.
+
+### App Logging
+![](Pasted%20image%2020220726203414.png)
+![](Pasted%20image%2020220726203445.png)
+
+Portal -> webapp -> App service logs
+![](Pasted%20image%2020220726203624.png)
+![](Pasted%20image%2020220726203804.png)
+
+Live Log stream
+![](Pasted%20image%2020220726204048.png)
+
+
+### Deployment Slots
+![](Pasted%20image%2020220726215313.png)
+### Auto scaling
+![](Pasted%20image%2020220726215937.png)
+
+Needs service plan of Standard and above.
+
+### Azure Web App VNET Integration
+![](Pasted%20image%2020220726220650.png)
+This allows webapp to access to the resources like DBs in VNET
+but not vice versa.
+
+### Azure web app backups
+![](Pasted%20image%2020220726221407.png)
+
 ## Functions logic app
+
 # Azure Storage
+## Azure Storage data services
+-   [Azure Blobs](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction): A massively scalable object store for text and binary data. Also includes support for big data analytics through Data Lake Storage Gen2.
+-   [Azure Files](https://docs.microsoft.com/en-us/azure/storage/files/storage-files-introduction): Managed file shares for cloud or on-premises deployments.
+-   [Azure Queues](https://docs.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction): A messaging store for reliable messaging between application components.
+-   [Azure Tables](https://docs.microsoft.com/en-us/azure/storage/tables/table-storage-overview): A NoSQL store for schemaless storage of structured data.
+-   [Azure Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview): Block-level storage volumes for Azure VMs.
+
 ![](Pasted%20image%2020220712154453.png)
 
 Blob is an object storage
@@ -447,6 +503,12 @@ Ref: https://docs.microsoft.com/en-us/azure/storage/file-sync/file-sync-troubles
 • Built-in security
     • Automatic encryption to help protect your data using Microsoft-managed keys 
        or your own
+
+## Ref: 
+https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
+https://docs.microsoft.com/en-us/azure/storage/common/nfs-comparison
+https://docs.microsoft.com/en-us/azure/virtual-machines/disks-types
+https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/ready/considerations/storage-options
 
 
 # Backups
@@ -594,6 +656,32 @@ Allows to connect (RDP/SSH) to the backend VMs (without public IP) through LBs p
 ### VM with Multiple IP Addresses 
 https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/virtual-network-multiple-ip-addresses-portal
 
+## Azure DNS Zones
+### Domain name registrar
+A domain registrar is a company who can provide Internet domain names. 
+    • Example: GoDaddy, Wix, Namcheap, AWS Route53 
+    • They verify if the Internet domain you want to use is available and allow you to purchase it. 
+• Once the domain name is registered, you are the legal owner for the domain name. 
+• If you already have an Internet domain, you will use the current domain registrar to delegate to Azure DNS. 
+
+### DNS Zone
+• A domain is a unique name in the Domain Name System, for example stacksimplify.com. 
+A DNS zone is used to host the DNS records for a particular domain. 
+    • For example, the domain stacksimplify.com may contain several DNS records such as 
+    • mail.stacksimplify.com (for a mail server) 
+    • www.stacksimplify.com (for a website). 
+    • courses.stacksimplify.com (Sub domains to host other applications) 
+
+### Azure DNS Zones
+• Azure DNS is not the domain registrar. 
+• Azure DNS allows you to host a DNS zone and manage the DNS records for a domain in Azure. 
+• For DNS queries for a domain to reach Azure DNS, the domain must be delegated to Azure DNS from the parent domain.
+
+`nslookup -type=NS <website> # list the name server details`
+
+### Delegate domain to Azure DNS
+https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/11-Delegate-Domain-from-AWS-Route53-to-Azure-DNS
+
 # Azure Monitor
 
 The following diagram gives a high-level view of Azure Monitor. At the center of the diagram are the data stores for metrics and logs, which are the two fundamental types of data used by Azure Monitor. On the left are the [sources of monitoring data](https://docs.microsoft.com/en-us/azure/azure-monitor/agents/data-sources) that populate these [data stores](https://docs.microsoft.com/en-us/azure/azure-monitor/data-platform). On the right are the different functions that Azure Monitor performs with this collected data. Actions include analysis, alerting, and streaming to external systems.
@@ -602,17 +690,67 @@ The following diagram gives a high-level view of Azure Monitor. At the center of
 ![](Pasted%20image%2020220714231935.png)
 Alerts can be configured based on the Metrics or Activity logs or Log analytics data.
 
-Diagnostic settings
+## To view any Metrics
+Portal -> Monitor -> (select the subscription and resource) to see the graphs.
+
+### Monitor the VM
+Along with the metrics there are other options available to monitor a VM.
+**Azure Diagnostics extension**
+This can be used to collect monitoring data from the guest operating system and workloads that run on Azure virtual machines. 
+You can archive the data onto Azure Storage accounts. 
+Here an agent is installed on the Virtual Machine via a Virtual Machine extension. 
+It can collect data such as 
+    - Event Logs 
+    - performance and file based logs 
+    - IIS logs 
+    - .Net application logs 
+    - Agent diagnostic logs 
+
+**Log Analytics Agent ( Microsoft Monitoring agent)** 
+This can be used to collect monitoring data from the guest operating system and workloads that run on Azure virtual machines, other cloud providers and on- premise as well. 
+All of the data is collected in a Log Analytics workspace. 
+Here a Log Analytics agent is installed via a Virtual Machine extension. 
+It can collect data such as 
+    - Event Logs 
+    - Performance and file-based logs 
+    - Collect information on other Insights and solutions as well 
+
+**Dependency Agent** 
+This agent is used to collect the data that is discovered about the processes 
+running on the virtual machine. 
+This requires the prior installation of the Log Analytics agent. 
+
+**Telegraf agent** 
+This is used to collect performance data from Linux computers and send it to 
+Azure Monitor metrics. 
+
+## Diagnostic Setting
+On a VM monitoring you can see the key metrics like CPU, Disk utilization and network.
+But enabling diagnostic setting will allow to monitor memory and other metrics.
+
+- you can send the platform logs for azure resources to get detailed diagnostic and auditing information.
+- you can send data to 
+    - Log analytics workspace
+    - Storage account
+    - or Events hub (data injection service normally used for bigdata)
+    
+Portal -> VM -> Diagnostic settings -> select a storage account -> enable guest-level monitoring
+once enabled the metric data is stored under storage account -> table
+ISS logs are stored under storage account -> blob container
 ![](Pasted%20image%2020220714232838.png)
 
 create alerts - 273 -  [AZ-104 Microsoft Azure Administrator Certification 2022](https://www.udemy.com/course/microsoft-certified-azure-administrator/) in Dyan's account.
+
+
+## Activity logs
+- All the control plane activities logged in Acitivity log
 
 ## Log analytics workspace
 ![](Pasted%20image%2020220714233448.png)
 To get the logs from a VM
 - Create log analytics workspace
 - Connect the VM
-- to connect a individual server download and install the agent and configure it in log analytics work space.
+- To connect a individual server download and install the agent and configure it in log analytics work space.
 - It takes 30 min to populate/collect the data
 
 ### Create a log analytics workspace
@@ -640,6 +778,31 @@ User and session counts.
 Performance counters of the underlying Windows or Linux Machines.
 Diagnostic trace logs from your application.
 
+## Alerts
+### Dynamic threshold in Azure Monitor for Dynamic Alerts
+Dynamic thresholds in Azure Monitor makes use of advanced machine learning. 
+This technique makes use of historical behavior to identify any patterns or 
+anomalies that might indicate possible service issues. 
+When you choose to use dynamic thresholds, you have to mention a setting 
+known as sensitivity. 
+There are three settings 
+High - Here an alert rule will be triggered on the smallest deviation that could result in more alerts. 
+Medium — Here you have less tight and more balanced thresholds and fewer alerts will be generated. 
+Low— Here alerts will only be triggered is there are large deviations. 
+
+### Alerts - function group
+In Alerting action group we can select any of the below option to act on alert.
+![](Pasted%20image%2020220731140754.png)
+
+### Alert - PowerShell
+AZ400 - 213
+
+# Site Reliability Engineering (SRE)
+GAPS AZ400 - section 7
+- Monitoring
+- Alerting
+
+Alerting
 # Service or Resource limits
 We have already learnt on using services such as the Virtual Machine service. Now when using services it is important to understand that you have limits on how many resources you can create per service.
 

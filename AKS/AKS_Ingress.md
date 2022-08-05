@@ -26,8 +26,7 @@ on Kubernetes, with advanced capabilities at HTTP layer.
 ## Context Path based routing
 ![](Pasted%20image%2020220711143536.png)
 
-## Host name based routing and External DNS
-![](Pasted%20image%2020220711143814.png)
+
 
 ## SSL 
 ![](Pasted%20image%2020220711144058.png)
@@ -63,3 +62,16 @@ az network public-ip create --resource-group MC_aks-rg1_aksdemo1_centralus --nam
 # Make a note of Public IP created for Ingress
 52.154.156.139
 ```
+
+# External DNS with Ingress (Host name based routing and External DNS)
+• ExternalDNS synchronizes exposed Kubernetes Services and Ingresses with DNS provider*
+• In simple terms, ExternalDNS allows you to control DNS records dynamically via Kubernetes resources in a DNS provider-agnostic way.
+• Reference: [https://github.com/kubernetes-sigs/external-dns](https://github.com/kubernetes-sigs/external-dns)
+
+> Whenever you mention the host name in Ingress its automatically gets created/synchronized with the Azure DNS Zones (by automatically creating the record sets).
+
+![](Pasted%20image%2020220801235739.png)
+
+- Virtual machine scale set in AKS cluster which is hosting the work load pods (external DNS, Ingress and apps) accesses the DNS zones through managed service identity.
+- once the host name (eapp1.kubeoncloud.com) defined in ingress service it triggers the external DNS which is hosted on virtual machine scale set will create/update/delete the entries in DNS zones through MSI.
+- External DNS is a k8s addon and will be deployed on the k8s.
