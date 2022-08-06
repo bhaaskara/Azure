@@ -113,9 +113,19 @@ Ref: https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/1
 
 
 # AKS Integrated with Azure AD
+![](Pasted%20image%2020220805132813.png)
+
 ![](Pasted%20image%2020220723161207.png)
 
 https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/21-Azure-AKS-Authentication-and-RBAC
+
+1. Create Azure AD Users and Associate them with AD Group
+2. Enable AKS Cluster with AKS-managed Azure Active Directory feature
+3. Access an Azure AD enabled AKS cluster using Azure AD User
+    `az aks get-credentials --resource-group aks-rg3 --name aksdemo3 --overwrite-existing`
+  >  It does browser authentication first time.
+  
+## K8s Roles and Role bindings with Azure AD
 
 # AKS Autoscaling
 https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/22-Azure-AKS-Autoscaling
@@ -223,6 +233,23 @@ View kube config
 `kubectl config current-context` # View context
 `kubectl config use-context aksdemo3` # Switch context
 
+# AKS - Auto Scaling
+- cluster auto scaler
+- pod auto scaler - HPA
+
+![](Pasted%20image%2020220806151855.png)
+
+## Cluster AutoScaler
+• Cluster Autoscaler is a tool that automatically adjusts the size of a Kubernetes cluster when one of the following conditions is true: 
+• There are pods that failed to run in the cluster due to insufficient resources. 
+• There are nodes in the cluster that have been underutilized for an extended period of time and their pods can be placed on other 
+existing nodes. 
+• The Cluster Autoscaler modifies our nodepools so that they scale out when we need more resources and scale in when we have 
+underutilized resources. 
+
+https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/22-Azure-AKS-Autoscaling
+
+> Cluster auto scaling is per node pool.
 
 # AKS - Storage
 https://docs.microsoft.com/en-us/azure/aks/concepts-storage
