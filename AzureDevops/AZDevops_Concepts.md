@@ -51,7 +51,7 @@ Sprints give you the ability to create increments of work for your team to accom
 **Dashboard**
 Azure dashboards comes with a rich canvas for creating dashboards. Add widgets as needed to track progress and directions.
 
-# Azure pipe line
+# Azure pipeline
 https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops
 https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/key-pipelines-concepts?view=azure-devops
 
@@ -167,6 +167,32 @@ how to deploy on to AKS - may cover in AKS course
 how to use passwords in pipeline
 ```
 
+## Pipeline Analytics
+When you have multiple runs of your pipeline, you will can see reports about the summary of the different runs
+For for any pipeline, first you have a summary of all of the runs of the pipeline
+
+So first in Azure Pipelines, you can go to your desired pipeline. Taking an example in the below snapshot
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-09-22_11-23-56-fe03e3e8d81e203ab28768d076b955db.jpg)
+
+Here you will see a summary of all of the runs of that pipeline
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-09-22_11-24-39-f7863ed72563069ab745b8cfb4046736.jpg)
+
+Then you can go to the branches tab. Here you will see a graphical representation of the runs of the pipeline against the various branches
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-09-22_11-26-07-472b3af5a1fd0afe408e175097e27470.jpg)
+
+The red bar indicates that the pipeline failed during that run.
+
+Next when you go to the Analytics tab
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-09-22_11-26-55-f7ac397fc03a62744195e86c628912c6.jpg)
+
+Here you can see reports on the various pipeline runs
+
+![](https://img-c.udemycdn.com/redactor/raw/2020-09-22_11-27-42-ac9654252c6258750d44c25a37b25618.jpg)
+
 # Continuous Delivery
 ![](Pasted%20image%2020220717144237.png)
 
@@ -273,9 +299,96 @@ stages:
     - script: echo $(secret)
 ```
 
-## Trouble shooting Pipeline
+# Trouble shooting Pipeline
+**Errors** under build / release pipeline summary
+**Job** will list all the tasks in it and check out the log of a failed task.
+
+# Selenium
+- Its a WebUI testing frame work.
+- Any of the programming language can be used along with the frame work i.e .net to test the WebUI
+- we can test the page contents and different controls on the page without manual intervention
 
 
+# Azure Pipeline - Terraform
+1. Create terraform file for creating a VM and push to repo
+2. ![](Pasted%20image%2020220809140939.png)
+
+3. Create a build pipeline and publish the terraform files to be available for release pipeline
+```yml
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+trigger:
+- master
+ 
+pool:
+  vmImage: 'ubuntu-latest'
+ 
+steps:
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Pipeline.Workspace)'
+    artifact: 'drop'
+    publishLocation: 'pipeline'
+```
+
+4. Create an empty build pipeline and add tasks as below
+Azure devops Portal -> Pipeline -> Release pipeline -> empty job
+![](Pasted%20image%2020220809134304.png)
+    a. Add previous build job's artifact
+    b. Add Job
+        ![](Pasted%20image%2020220809134516.png)
+    ![](Pasted%20image%2020220809134608.png)
+    Add Azure CLI task to create storage account
+![](Pasted%20image%2020220809134758.png)
+Mention the service connection to connect to storage account.
+
+![](Pasted%20image%2020220809134844.png)
+![](Pasted%20image%2020220809134924.png)
+inline script
+```sh
+az storage account create -g newgrp1 -n terraform10001 -l centralus --sku Standard_LRS
+az storage container create --name terraform --acount-name terraform10001 
+az storage account keys list -g newgrp1 --account-name terraform10001 --query "[0].value" --output tsv > temp.txt
+$content = Get-Content temp.txt -First 1
+$key = '"{0}"' -f $content
+```
+
+C. Add another task - Terraform tool installer
+![](Pasted%20image%2020220809135142.png)
+Note: Install `terraform` extension if needed.
+
+![](Pasted%20image%2020220809135255.png)
+Leave everything defaults
+
+D. Add another task - Terraform
+![](Pasted%20image%2020220809135344.png)
+
+![](Pasted%20image%2020220809135443.png)
+Display name can be anything here its Terraform: Init for our convenience
+ 
+Configuration directory - browese and select the folder contains TF config files
+![](Pasted%20image%2020220809135615.png)
+![](Pasted%20image%2020220809135651.png)
+
+![](Pasted%20image%2020220809135922.png)
+This is for the remote tf state file
+Storage account and Container - Mention the stoarge account name created in the first step. 
+
+![](Pasted%20image%2020220809140207.png)
+![](Pasted%20image%2020220809140146.png)
+
+Add another task - Terraform-Plan
+![](Pasted%20image%2020220809140431.png)
+All other options as above terraform - init
+
+Add Another task - Terraform - validate and apply
+![](Pasted%20image%2020220809140650.png)
+![](Pasted%20image%2020220809140801.png)
+All other options as above terraform - init
+
+Run the release pipleline would create a VM in Azure.
 
 # Deployment strategies
 1. Blue green deployment
@@ -285,7 +398,203 @@ stages:
 1. Rolling deployment
 2. Feature flags
 
+# Security in CI/CD Pipeline
+![](Pasted%20image%2020220807122948.png)
+## Different types of testing
+- Unit testing
+- Code coverage
+- Code metrics
+- Static/Source code analysis
+- Functional testing
+- Load Testing
 
+### Unit Testing
+![](Pasted%20image%2020220807123531.png)
+- App would have multiple mdules and each module will be tested by its respective unit test cases.
+- Automated frame works to develop unit tests are Nunit and Junit etc..
+
+**Unit Test cases in Azure Pipeline**
+1. Develop the unit test cases for your project
+2. Add/Push them in to your repo
+3. Add the task in pipeline 
+    Sample YAML
+```yml
+    # ASP.NET Core (.NET Framework)
+    # Build and test ASP.NET Core projects targeting the full .NET Framework.
+    # Add steps that publish symbols, save build artifacts, and more:
+    # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+ 
+trigger:
+- master
+ 
+pool:
+  vmImage: 'windows-latest'
+ 
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+ 
+steps:
+- task: NuGetToolInstaller@1
+ 
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+ 
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+ 
+- task: DotNetCoreCLI@2
+  inputs:
+    command: test
+    projects: '**/*Test/*.csproj'
+    arguments: '--configuration $(buildConfiguration)'
+```
+Here the unit test cases are in the `unitTest` folder so in yaml mentioned it as `*Test`.
+
+4. Check the test case results
+![](Pasted%20image%2020220807140140.png)
+
+### Code coverage
+- ensures all the modules are tested through unit tests
+- ensures all the modules are being used in the app, or in other words there is no unnecessary code in the app.
+
+### Code metrics
+- ensures the maintanability of the code by measuring its complexity
+
+### Static/Source code analysis
+- Based on set of rules the SCA tools check for the security concerns in the code and suggests on improving the code.
+
+> All these testing (Unit, code coverage, code metrics and SCA) can be done in development phase as well as in integration phase.
+> 
+
+### Automated functional testing
+- Tool that helps in testing system as a whole.
+- ex Selenium
+
+### Load testing
+- simulated user session to put load on the system and test.
+
+## White source bolt with Azure devops
+WhiteSource bolt for Azure DevOps is a FREE extension, which scans all your projects and detects open source 
+components, their license and known vulnerabilities. Not to mention, we also provide fixes. 
+
+**1. Install White source bolt** extension 
+Azure devops -> organization -> settings -> extensions -> "WhiteSource bolt" 
+
+**2. Add Task to your pipeline**
+![](Pasted%20image%2020220807134838.png)
+Note: it doesnt need any inputs, just remove if its added by default.
+
+**3. Check WhiteSource bolt Report**
+![](Pasted%20image%2020220807135056.png)
+
+> Note: White source bolt free version is limited to 5 scans per day per repo.
+
+Sample YAML with white source bolt
+```yml
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+ 
+trigger:
+- master
+ 
+pool:
+  vmImage: 'windows-latest'
+ 
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+ 
+steps:
+- task: NuGetToolInstaller@1
+ 
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+ 
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+ 
+- task: WhiteSource Bolt@20
+
+```
+
+## SonarQube
+Code quality and security.
+
+## Integrate with Azure Devops
+**1. Install Sonal cloud extension on Azure devops**
+Azure devops -> organization -> organization settings -> extension -> sonar cloud
+
+**2. Create service connection to connect to soarcloud from azure devops**
+Azure devops -> organization -> service connections 
+
+**3. Add Tasks to pipeline**
+    - SonarCloudPrepare
+    - SonarCloudAnalyze
+    - SonarCloudPublish
+
+Sample YAML
+```yml
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+ 
+trigger:
+- master
+ 
+pool:
+  vmImage: 'windows-latest'
+ 
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+ 
+steps:
+- task: NuGetToolInstaller@1
+ 
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+ 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'sonar-connection'
+    organization: 'app-org'
+    scannerMode: 'MSBuild'
+    projectKey: 'app-project'
+    projectName: 'app-project'
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+ 
+- task: SonarCloudAnalyze@1
+- task: SonarCloudPublish@1
+  inputs:
+    pollingTimeoutSec: '300'
+```
+
+**4. Results and issues will be available in Sonar Cloud**
+
+GAPS: Technical debt - vid 80
 ## Ref
 **Azure pipeline tutorial**
 https://docs.microsoft.com/en-us/azure/devops/pipelines/?view=azure-devops

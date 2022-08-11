@@ -118,3 +118,14 @@ az network public-ip create --resource-group <REPLACE-OUTPUT-RG-FROM-PREVIOUS-CO
 # REPLACE - Create Public IP: Replace Resource Group value
 az network public-ip create --resource-group MC_aks-rg1_aksdemo1_centralus --name myAKSPublicIPForIngress --sku Standard --allocation-method static --query publicIp.ipAddress -o tsv
 ```
+
+## Azure Traffic Manager
+
+Azure portal -> traffic manager -> Create
+![](Pasted%20image%2020220809173400.png)
+Routing Methods
+![](Pasted%20image%2020220809173323.png)
+
+Add endpoint
+(Create the 2 webapps to be configured as end points)
+![](Pasted%20image%2020220809173532.png)

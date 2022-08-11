@@ -651,6 +651,28 @@ Allows to connect (RDP/SSH) to the backend VMs (without public IP) through LBs p
 
 122-135 videos in # [AZ-104 Microsoft Azure Administrator Certification 2022](https://www.udemy.com/course/microsoft-certified-azure-administrator/) in Dyan's account.
 
+## Azure Traffic manager
+![](Pasted%20image%2020220809145216.png)
+- Its a Global service
+- It works at DNS level
+
+## Routing Methods
+### Priority Routing Method
+- This is used in active/passive setup
+![](Pasted%20image%2020220809145707.png)
+### Weighted Routing Method
+![](Pasted%20image%2020220809145921.png)
+- In this case the traffic is evenly distributed.
+- Weighted routing method is used in Blue-Green Deployments.
+
+### Performance routing method
+![](Pasted%20image%2020220809151241.png)
+
+
+## Azure Front Door
+## Azure App gateway
+https://www.iamashishsharma.com/2020/04/difference-between-azure-front-door.html#:~:text=Azure%20Front%20Door%20provides%20TLS,Azure%20Traffic%20Manager%20does%20not.
+
 
 ## Ref: 
 ### VM with Multiple IP Addresses 
