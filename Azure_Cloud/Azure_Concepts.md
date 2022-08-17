@@ -226,6 +226,16 @@ The Storage account type and OS disk type should match.
 ### Custom script extensions
 33,34 - # [AZ-104 Microsoft Azure Administrator Certification 2022](https://www.udemy.com/course/microsoft-certified-azure-administrator/)
 
+Custom script extension is used to boot strap the server.
+Need a storage account to store the custom scripts
+
+**Install IIS on the VM using custom script**
+1. Create a storage account in the same region as VM -> create container -> upload the script
+```sh
+mport-module servermanager
+add-windowsfeature web-server -includeallsubfeature
+```
+2. VM -> Extension -> Custom script extension -> Storage account -> select the script.
 
 ### Linux VM - Custom data and Cloud Init
 Azure -> VM -> Advanced options

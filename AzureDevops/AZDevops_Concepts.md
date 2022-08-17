@@ -60,11 +60,46 @@ https://docs.microsoft.com/en-us/azure/devops/pipelines/get-started/key-pipeline
 
 ![](Pasted%20image%2020220723002012.png)
 
-# Continuous Integration
+Example Pipeline
+```yml
+# ASP.NET Core (.NET Framework)
+# Build and test ASP.NET Core projects targeting the full .NET Framework.
+# Add steps that publish symbols, save build artifacts, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
+
+trigger:
+- main
+
+pool:
+  vmImage: 'windows-latest'
+
+variables:
+  solution: '**/*.sln'
+  buildPlatform: 'Any CPU'
+  buildConfiguration: 'Release'
+
+steps:
+- task: NuGetToolInstaller@1
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
+- task: VSBuild@1
+  inputs:
+    solution: '$(solution)'
+    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:DesktopBuildPackageLocation="$(build.artifactStagingDirectory)\WebApp.zip" /p:DeployIisAppPath="Default Web Site"'
+    platform: '$(buildPlatform)'
+    configuration: '$(buildConfiguration)'
+```
+
+# Continuous Integration (Build Pipeline)
 ```
 In Continuous Integration we create the build pipeline
-which get the code from GIT and build the code and publish the artifacts.
+which get the code from GIT, build the code and publish the artifacts.
 ```
+
+**Continuous Integration** means automatically building and testing the code every time a team member commits the code changes to version control.
 Bug fixes or feature developments on feature branches will be merged on to master/main branch through pull requests.
 
 ## Create a New Build pipeline
@@ -105,6 +140,7 @@ In pipeline yaml add `publish build artifacts` step
 
 ## Agent pool
 - Microsoft hosted agents
+    - https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/hosted?view=azure-devops&tabs=yaml
 - Self hosted agents
 
 ### Self hosted agent pool
@@ -398,6 +434,10 @@ Run the release pipleline would create a VM in Azure.
 1. Rolling deployment
 2. Feature flags
 
+# Build Your Infrastructure
+![](Pasted%20image%2020220814174217.png)
+
+
 # Security in CI/CD Pipeline
 ![](Pasted%20image%2020220807122948.png)
 ## Different types of testing
@@ -639,3 +679,7 @@ Note: you can get this info from Azure Artifacts -> feed -> connect to feed
 **How to get access token**
 ![](Pasted%20image%2020220719200536.png)
 ![](Pasted%20image%2020220719200641.png)
+
+# Design and Implement IAC
+Microsoft has released a new language called Bicep that has the same capabilities as ARM templates.
+Bicep just uses a syntax that is easier to use.

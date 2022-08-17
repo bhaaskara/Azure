@@ -129,3 +129,21 @@ Routing Methods
 Add endpoint
 (Create the 2 webapps to be configured as end points)
 ![](Pasted%20image%2020220809173532.png)
+
+# Azure WebApp (PAAS)
+## Publish to an Azure WebApp
+1. Create a webApp resource in portal
+2. Publish your app (code) from VS to the webapp
+3. Access the App through URL
+
+
+**1. Create Azure WebApp Resource**
+Portal -> Azure Webapp -> Create
+![](Pasted%20image%2020220814191640.png)
+![](Pasted%20image%2020220814191743.png)
+
+Select the App Service plan
+![](Pasted%20image%2020220814191718.png)
+
+**3. Access App through URL**
+![](Pasted%20image%2020220814192015.png)
