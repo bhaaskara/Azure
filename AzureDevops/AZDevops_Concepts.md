@@ -150,6 +150,7 @@ In pipeline yaml add `publish build artifacts` step
     1. Git
     2. .net
     3. python etc..
+4. Register the agent
 
 **1. Create a VM in Azure**
     Create a VM with all default options and can be any region.
@@ -168,11 +169,18 @@ Create one in Azure devops -> account -> PAT -> with scope of agent read and man
 
 ![](Pasted%20image%2020220717120609.png)
 
+**4. Register the agent**
+on the VM
+![](Pasted%20image%2020220817115358.png)
+Note: All the build data will be saved in `C:\work` directory.
+`C:\work\1\s` - Source code
+`C:\work\1\a` - Archive files/builds
+
 Use this agent in pipeline
 ```yml
 pool
   name: 'default' 
-  vmImage: 'agentvm' #AgentVMname
+  #vmImage: 'agentvm' #AgentVMname 
 ```
 
 **Videos - 62-66 about Jenkins**
@@ -194,9 +202,14 @@ Azure devops -> project -> settings -> test management -> Flaky test detection.
 Free tier doesn't have parallel jobs enabled.
 Azure subscription be merged with Azure devops billing.
 
+Check the parallel jobs settings
+Azure DevOps -> Organization -> Org settings -> pipelines -> parallel jobs
+![](Pasted%20image%2020220817201527.png)
+
 ## DOUBTS
 ```
 how to use variables in azure pipeline
+    https://docs.microsoft.com/en-us/azure/devops/pipelines/build/variables?view=azure-devops&tabs=yaml
 how to use user inputs
 how to use multi stage pipeline
 how to deploy on to AKS - may cover in AKS course
@@ -344,7 +357,27 @@ stages:
 - Any of the programming language can be used along with the frame work i.e .net to test the WebUI
 - we can test the page contents and different controls on the page without manual intervention
 
+# Azure Pipelines - GitHub
+https://docs.microsoft.com/en-us/azure/devops/pipelines/repos/github?view=azure-devops&tabs=yaml
 
+## Github status badge
+AZ-400 : 369
+
+# Azure Pipelines - Teams
+1. Install `Azure pipelines` app in Teams
+2. Subscribe to `Pipeline URL`
+
+**1. Install `Azure pipelines` app in Teams**
+Teams -> Apps -> Azure pipelines
+![](Pasted%20image%2020220817215519.png)
+
+**2. Subscribe to pipeline URL**
+![](Pasted%20image%2020220817215742.png)
+
+
+# Azure pipeline - caching
+https://docs.microsoft.com/en-us/azure/devops/pipelines/release/caching?view=azure-devops
+- Reduces build time.
 # Azure Pipeline - Terraform
 1. Create terraform file for creating a VM and push to repo
 2. ![](Pasted%20image%2020220809140939.png)
@@ -440,6 +473,11 @@ Run the release pipleline would create a VM in Azure.
 
 # Security in CI/CD Pipeline
 ![](Pasted%20image%2020220807122948.png)
+Security in Development stage
+- Using security plugins in IDEs
+- Conduct peer reviews
+- Adhere to coding standards
+
 ## Different types of testing
 - Unit testing
 - Code coverage
@@ -503,7 +541,7 @@ Here the unit test cases are in the `unitTest` folder so in yaml mentioned it as
 ### Code coverage
 - ensures all the modules are tested through unit tests
 - ensures all the modules are being used in the app, or in other words there is no unnecessary code in the app.
-
+- use coverlet.msbuild extension to test the code coverage for .net projects.
 ### Code metrics
 - ensures the maintanability of the code by measuring its complexity
 
@@ -520,12 +558,23 @@ Here the unit test cases are in the `unitTest` folder so in yaml mentioned it as
 ### Load testing
 - simulated user session to put load on the system and test.
 
-## White source bolt with Azure devops
+## Adding Unit tests
+1. With in the solution/product define unit tests under another project.
+2. Add unit test to the pipeline
+![](Pasted%20image%2020220817182035.png)
+Note: webtest.csproj is the project having unit tests and .csproj is the .net project file extension
+
+## Mend (White source) bolt with Azure devops
 WhiteSource bolt for Azure DevOps is a FREE extension, which scans all your projects and detects open source 
 components, their license and known vulnerabilities. Not to mention, we also provide fixes. 
 
+- This is an open-source software security and compliance management tool.
+- It integrates with the Azure DevOps set of tools , in the build pipelines.
+- Check for any sort of security vulnerabilities , licensing issues.
+- Let's you know if you are using outdated libraries.
+
 **1. Install White source bolt** extension 
-Azure devops -> organization -> settings -> extensions -> "WhiteSource bolt" 
+Azure devops -> organization -> settings -> extensions -> "Mend formerly WhiteSource bolt" 
 
 **2. Add Task to your pipeline**
 ![](Pasted%20image%2020220807134838.png)

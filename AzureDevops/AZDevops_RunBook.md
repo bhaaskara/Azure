@@ -61,3 +61,19 @@ https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/19-Azu
 
 ## Build pipeline - Task to deploy on AKS
 ![](Pasted%20image%2020220722210150.png)
+
+## Pipeline Task - Install .Net core
+Use the task `use .net core`
+
+![](Pasted%20image%2020220817095941.png)
+
+
+![](Pasted%20image%2020220817102553.png)
+
+![](Pasted%20image%2020220817102643.png)
+
+## Pipeline Task - Publish .Net core build
+![](Pasted%20image%2020220817120119.png)
+
+# Release Pipeline - Deploy webapp
+GAPS 383,384 - AZ 400 designing and implementing devops certification 2022
