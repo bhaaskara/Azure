@@ -3,7 +3,7 @@ Azure portal -> kubernetes services -> create kubernetes cluster
 
 -   **Basics**
     -   **Subscription:** Free Trial
-    -   **Resource Group:** Creat New: aks-rg1
+    -   **Resource Group:** Create New: aks-rg1
     -   **Kubernetes Cluster Name:** aksdemo1
     -   **Region:** (US) Central US
     -   **Kubernetes Version:** Select what ever is latest stable version

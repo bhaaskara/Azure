@@ -1,8 +1,7 @@
-# Why do we need Ingress?
-
-![](Pasted%20image%2020220710221407.png)
-
 # What is Ingress
+An API object that manages external access to the services in a cluster, typically HTTP.
+Ingress may provide load balancing, SSL termination and name-based virtual hosting
+
 Ingress is a Kubernetes resource that lets us configure an HTTP load balancer for applications running
 on Kubernetes, with advanced capabilities at HTTP layer.
 
@@ -21,6 +20,11 @@ on Kubernetes, with advanced capabilities at HTTP layer.
 - Equivalent to Kubernetes Services but with lot of additional features
 - We can define routing rules based on URI or Hostname in Ingress Resource Manifest
 - We can even define SSL/ TLS related information in Ingress Resource Manifest.
+
+# Why do we need Ingress?
+
+![](Pasted%20image%2020220710221407.png)
+
 
 # Azure AKS and NGINX ingress controller
 ## Context Path based routing

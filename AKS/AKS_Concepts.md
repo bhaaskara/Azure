@@ -260,3 +260,14 @@ https://docs.microsoft.com/en-us/azure/aks/operator-best-practices-multi-region
 
 # AKS - Workload and API objects backup
 https://docs.microsoft.com/en-us/azure-stack/aks-hci/backup-workload-cluster
+
+# References
+-   [**Azure AKS Kubernetes - Masterclass | Azure DevOps, Terraform:**](https://github.com/stacksimplify/azure-aks-kubernetes-masterclass) https://github.com/stacksimplify/azure-aks-kubernetes-masterclass
+    
+-   [**Azure DevOps for Kubernetes Workloads running on Azure AKS Cluster:**](https://github.com/stacksimplify/azure-devops-github-acr-aks-app1) https://github.com/stacksimplify/azure-devops-github-acr-aks-app1
+    
+-   [**Provision Azure AKS Cluster using Terraform and Azure DevOps:**](https://github.com/stacksimplify/azure-devops-aks-kubernetes-terraform-pipeline) https://github.com/stacksimplify/azure-devops-aks-kubernetes-terraform-pipeline
+    
+-   [**Docker Fundamentals:**](https://github.com/stacksimplify/docker-fundamentals) https://github.com/stacksimplify/docker-fundamentals
+    
+-   [**Presentation with 250 Slides outlining the various architectures and designs we are going to do in this course:**](https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/tree/master/ppt-presentation) https://github.com/stacksimplify/azure-aks-kubernetes-masterclass/tree/master/ppt-presentation
