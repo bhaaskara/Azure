@@ -242,10 +242,8 @@ View kube config
 ## Cluster AutoScaler
 • Cluster Autoscaler is a tool that automatically adjusts the size of a Kubernetes cluster when one of the following conditions is true: 
 • There are pods that failed to run in the cluster due to insufficient resources. 
-• There are nodes in the cluster that have been underutilized for an extended period of time and their pods can be placed on other 
-existing nodes. 
-• The Cluster Autoscaler modifies our nodepools so that they scale out when we need more resources and scale in when we have 
-underutilized resources. 
+• There are nodes in the cluster that have been underutilized for an extended period of time and their pods can be placed on other existing nodes. 
+• The Cluster Autoscaler modifies our nodepools so that they scale out when we need more resources and scale in when we have underutilized resources. 
 
 https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/22-Azure-AKS-Autoscaling
 
