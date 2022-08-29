@@ -208,7 +208,7 @@ This allows a managed disk to be attached to multiple virtual machines.
 Used for clustered SQL server workloads
 There are restrictions, can only be enable for Premium and Ultra disks.
 
-**Note:** Create a manged disk and enable sharing in advanced options
+**Note:** Create a managed disk and enable sharing in advanced options
            Attach the disk on to VM
            and Before attaching the shared disk to another VM, the first VM should be stopped.
            Need MPIO software to manage the shared disks
@@ -245,7 +245,7 @@ Note: allow port 80 (required ports depend on the softwares) in NSG.
 ### Boot Diagnostics
 Azure -> VM -> Support + trouble shooting
 
-Helps in finding out the boot isues.
+Helps in finding out the boot issues.
 Shows system screen shot.
 View and download the serial log.
 
@@ -405,7 +405,7 @@ but not vice versa.
 -   [Azure Blobs](https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction): A massively scalable object store for text and binary data. Also includes support for big data analytics through Data Lake Storage Gen2.
 -   [Azure Files](https://docs.microsoft.com/en-us/azure/storage/files/storage-files-introduction): Managed file shares for cloud or on-premises deployments.
 -   [Azure Queues](https://docs.microsoft.com/en-us/azure/storage/queues/storage-queues-introduction): A messaging store for reliable messaging between application components.
--   [Azure Tables](https://docs.microsoft.com/en-us/azure/storage/tables/table-storage-overview): A NoSQL store for schemaless storage of structured data.
+-   [Azure Tables](https://docs.microsoft.com/en-us/azure/storage/tables/table-storage-overview): A NoSQL store for schema less storage of structured data.
 -   [Azure Disks](https://docs.microsoft.com/en-us/azure/virtual-machines/managed-disks-overview): Block-level storage volumes for Azure VMs.
 
 ![](Pasted%20image%2020220712154453.png)
@@ -484,7 +484,7 @@ Portal -> Create Import / Export job
 Azure ships a Hard disk with data
 
 ## Azure File Share
-Note: Azure file share uses port 445 to transfer the data, and most of the ISPs blok this port on home computers due to security concerns. So you can use File Sync. 
+Note: Azure file share uses port 445 to transfer the data, and most of the ISPs block this port on home computers due to security concerns. So you can use File Sync. 
 And you should be able to mount the File Share on your office laptops.
 
 ### Azure File Sync
