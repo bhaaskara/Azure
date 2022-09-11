@@ -583,7 +583,13 @@ Ref: https://docs.microsoft.com/en-us/azure/backup/quick-backup-vm-portal
 ## VNet
 Azure Virtual Network (VNet) is the fundamental building block for your private network in Azure.
 
-Azure virtual network enables Azure resources to securely communicate with each other, the internet, and on-premises networks. Key scenarios that you can accomplish with a virtual network include - communication of Azure resources with the internet, communication between Azure resources, communication with on-premises resources, filtering network traffic, routing network traffic, and integration with Azure services.
+Azure virtual network enables Azure resources to securely communicate with each other, the internet, and on-premises networks. 
+Key scenarios that you can accomplish with a virtual network include
+- communication of Azure resources with the internet
+- communication between Azure resources
+- communication with on-premises resources
+- filtering network traffic
+- routing network traffic and integration with Azure services.
 
 ### Communicate with the internet
 All resources in a VNet can communicate outbound to the internet, by default. You can communicate inbound to a resource by assigning a public IP address or a public Load Balancer. You can also use public IP or public Load Balancer to manage your outbound connections.
@@ -636,6 +642,39 @@ Each NIC attached to a VM must exist in the same location and subscription as th
 - Secondary NIC has to be in the same region and VNET
 - Secondary NIC can't be attached to a running VM
 
+## IP Addresses
+**Private IP**
+By Default VMs in Azure get assigned with a dynamic private IP and can be changed to static in VM->NIC settings.
+Private IP will be with in the subnet range.
+
+**Public IP**
+In Azure Resource Manager, a [public IP](https://docs.microsoft.com/en-us/azure/virtual-network/ip-services/virtual-network-public-ip-address) address is a resource that has its own properties. Some of the resources you can associate a public IP address resource with:
+-   Virtual machine network interfaces
+-   Virtual machine scale sets
+-   Public Load Balancers
+-   Virtual Network Gateways (VPN/ER)
+-   NAT gateways
+-   Application Gateways
+-   Azure Firewall
+-   Bastion Host
+-   Route Server
+
+Public IPs have two types of assignments:
+-   **Static** - The resource is assigned an IP address at the time it's created. The IP address is released when the resource is deleted.
+-   **Dynamic** - The IP address _isn't_ given to the resource at the time of creation when selecting dynamic. The IP is assigned when you associate the public IP address with a resource. The IP address is released when you stop, or delete the resource
+
+**Note** Even when you set the allocation method to **static**, you cannot specify the actual IP address assigned to the public IP address resource. Azure assigns the IP address from a pool of available IP addresses in the Azure location the resource is created in.
+
+## Default Outbound access for VMs
+Azure provides a default outbound access IP for VMs that either aren't assigned a public IP address or are in the back-end pool of an internal basic Azure load balancer. The default outbound access IP mechanism provides an outbound IP address that isn't configurable.
+
+The default outbound access IP is disabled when either a public IP address is assigned to the VM or the VM is placed in the back-end pool of a standard load balancer, with or without outbound rules. If an [Azure Virtual Network network address translation (NAT)](https://docs.microsoft.com/en-us/azure/virtual-network/nat-gateway/nat-overview) gateway resource is assigned to the subnet of the virtual machine, the default outbound access IP is disabled.
+
+VMs that are created by virtual machine scale sets in flexible orchestration mode don't have default outbound access.
+
+## SNAT
+Certain scenarios require virtual machines or compute instances to have outbound connectivity to the internet. The frontend IPs of a public load balancer can be used to provide outbound connectivity to the internet for backend instances. This configuration uses **source network address translation (SNAT)** to translate virtual machine's private IP into the load balancer's public IP address. SNAT maps the IP address of the backend to the public IP address of your load balancer. SNAT prevents outside sources from having a direct address to the backend instances.
+
 ## NAT Gateway
 Simplify connectivity to the internet using a NAT (network address translation) gateway, Internet (Outbound) connectivity is possible without a load balancer or public IP addresses attached to your virtual machines. 
 
@@ -644,7 +683,21 @@ Azure Bastion is deployed to provide secure management connectivity to virtual m
 
 ## NSG
 NSG works as firewall
-It can be attached to NIC, Subnet or both.
+It can be attached to NIC, Subnet or both, but not on to VNET.
+It filters the traffic based on inbound and outbound rules.
+VM can be created with out a NSG, in this case all traffic is allowed.
+
+**Inbound Rules**
+By default all inbound traffic is denied.
+Rules are processed on priority
+When there are multiple rules first mathed rule will be processed and other rules are ignored. 
+
+![[Pasted image 20220909191457.png]]
+
+
+**Outbound rules**
+By default all internet outbound is allowed.
+![[Pasted image 20220909191853.png]]
 
 ## Azure Load Balancer
 Azure Load Balancer has 3 SKUs (stock keeping unit)- Basic, Standard, and Gateway. 
@@ -658,6 +711,7 @@ Basic load balancer is a Layer 4 load balancer, standard load balancer is L7 (ap
 
 ### Basic LB - NAT Rules
 Allows to connect (RDP/SSH) to the backend VMs (without public IP) through LBs public IP.
+Basic load balancer dont allow individual VMs which are not part of availabilty set
 
 122-135 videos in # [AZ-104 Microsoft Azure Administrator Certification 2022](https://www.udemy.com/course/microsoft-certified-azure-administrator/) in Dyan's account.
 

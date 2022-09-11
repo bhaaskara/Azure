@@ -119,6 +119,34 @@ az network public-ip create --resource-group <REPLACE-OUTPUT-RG-FROM-PREVIOUS-CO
 az network public-ip create --resource-group MC_aks-rg1_aksdemo1_centralus --name myAKSPublicIPForIngress --sku Standard --allocation-method static --query publicIp.ipAddress -o tsv
 ```
 
+## Load balancer
+### Basic Load balancer
+**Basic load balancer dont allow individual VMs which are not part of availabilty set**
+
+### Standard Public load balancer
+#### Create a public load balancer
+https://docs.microsoft.com/en-us/azure/load-balancer/quickstart-load-balancer-standard-public-portal
+az-104 dyan account - vid 130
+
+#### Add backend pool to the public load balancer
+
+![[Pasted image 20220910225101.png]]
+![[Pasted image 20220910225430.png]]
+![[Pasted image 20220910225708.png]]
+![[Pasted image 20220910225801.png]]
+**Standard load balancer allow individual VMs not oart of an availability set**
+**Basic load balancer dont allow individual VMs which are not part of availabilty set**
+
+#### Add health probe
+![[Pasted image 20220910230014.png]]
+![[Pasted image 20220910230251.png]]
+#### Add load balancing rules
+![[Pasted image 20220910230329.png]]
+![[Pasted image 20220910230402.png]]
+![[Pasted image 20220910230446.png]]
+![[Pasted image 20220910230509.png]]
+
+
 ## Azure Traffic Manager
 
 Azure portal -> traffic manager -> Create
@@ -147,3 +175,11 @@ Select the App Service plan
 
 **3. Access App through URL**
 ![](Pasted%20image%2020220814192015.png)
+
+
+# Trouble Shooting
+## Troubleshoot Azure VM connectivity problems
+https://docs.microsoft.com/en-us/azure/virtual-network/troubleshoot-vm-connectivity?source=recommendations
+
+## No Internet access from Azure Windows VM that has multiple IP addresses
+https://docs.microsoft.com/en-us/troubleshoot/azure/virtual-machines/no-internet-access-multi-ip?source=recommendations
