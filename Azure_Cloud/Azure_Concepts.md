@@ -13,8 +13,8 @@ A way to separating out projects, keeping unrelated things separate
 RGs will have a location, but its logical and the resources in it can be from any location.
 
 ### RG Lock
+Adding a lock prevents users from doing a activity.
 Azure portal -> RG -> Locks
-Adding a lock prevents users from doing the activity.
 
 ## Management Groups
 If your organization has many Azure subscriptions, you may need a way to efficiently manage access, policies, and compliance for those subscriptions. _Management groups_ provide a governance scope above subscriptions. You organize subscriptions into management groups the governance conditions you apply cascade by inheritance to all associated subscriptions.
@@ -32,7 +32,6 @@ Azure Policy helps to enforce organizational standards and to assess compliance.
 - Allowed Resource Type
 - Allowed Locations
 - Allowed Virtual Machine SKUs
-- Apply tag and its default value
 - Enforce tag and its value
 - Not allowed resource types
 
@@ -306,7 +305,7 @@ For more information on Azure Dedicated Hosts , you can visit the URL - [https:
 Bastion subnet should be named as AzureBastionSubnet
 
 Azure -> Vm -> Connect -> Bastion
-if it not exists it ask you to create one.
+if its not exists, it ask you to create one.
 now you can connect to your VM via browser with out public ip for a VM.
 
 ### Reset Password
@@ -550,8 +549,7 @@ To recover a single file, goto file recovery and select the snapshot, download t
 ![](Pasted%20image%2020220713230738.png)
 
 ## Soft delete
-Recovery Services Vault
-- Enabled by default on new RSV
+- Enabled by default on new Recovery Services Vault (RSV)
 - 14 days to delete backup data
 - Can be un-deleted
 - 15th day - auto delete
@@ -737,6 +735,52 @@ Basic load balancer dont allow individual VMs which are not part of availabilty 
 ## Azure App gateway
 https://www.iamashishsharma.com/2020/04/difference-between-azure-front-door.html#:~:text=Azure%20Front%20Door%20provides%20TLS,Azure%20Traffic%20Manager%20does%20not.
 
+![[Pasted image 20220911161402.png]]
+
+- This service is a web traffic load balancer that is used to distribute traffic to web applications. 
+- The web applications can reside on Virtual Machines, Virtual Machine Scale sets or even on on-premse servers. 
+- The Application gateway is an OSI Layer 7 (Application layer) load balancer. 
+- Secure Sockets Layer (SSL/TLS) termination, Here requests to the Application Gateway can be secure. 
+  And then the requests to the backend pool resources can go unencrypted. 
+- This can lift the burden of the backend pool for decrypting requests. 
+- The decryption of requests can be left to the Application gateway resource. 
+- You can also enable Autoscaling for your Application Gateway resource. 
+- This allows the Application Gateway to scale up or down based on traffic load patterns. 
+- You can also enable the Web Application Firewall feature for the Application Gateway resource. 
+- You can also enable session affinity which allows a user session to directed to the same server for processing. If the state of the user session is stored on the server , then this can be a useful feature.
+
+### App Gateway Components
+![[Pasted image 20220911165713.png]]
+
+- Frontend IP address - Users will hit the Application Gateway via the Frontend IP address. 
+- Listener - This is a logical entity that checks for incoming connection requests. 
+  There can be multiple listeners attached to an application gateway. 
+  There are 2 types of Listener configurations 
+	- Basic — Here the listener listens to a single domain site 
+	- Multi-site - Here the listeners maps to multiple domain sites. 
+- Routing Rules - This is used to route the traffic from the listener to the backend pool. 
+  There are 2 types of routing rules 
+	- Basic - Here all requests are routed to backend pool directly. 
+	- Path-based - Here requests are routed to the backend pool based on the URL in the request. 
+- Backend pools - These can be Network Interface cards , Virtual Machine scale 
+  sets , Public or Internal IP addresses , FQDN or backends such as App Service. 
+- Health Probes - This defines how the application gateway will monitor the health 
+  of the resources in the backend pool. 
+
+**Note:** While implementing the app gateway it needs an empty subnet in the VNET to deploy its own components.
+
+## L7 vs L4 load balancers
+at L4 LB can looks only at source IP and port to route the traffic
+at L7 LB can look at the URL (application) and route the traffic.
+L4 is faster when compared to L7.
+
+## HTTPS and HTTP load balancing
+-   **HTTP(S)** load-balancing services are [Layer 7](https://www.iso.org/ics/35.100/x/) load balancers that only accept HTTP(S) traffic. They are intended for web applications or other HTTP(S) endpoints. They include features such as SSL offload, web application firewall, path-based load balancing, and session affinity.
+    
+-   **Non-HTTP/S** load-balancing services can handle non-HTTP(S) traffic and are recommended for non-web workloads.
+
+#### Ref:
+https://docs.microsoft.com/en-us/azure/architecture/guide/technology-choices/load-balancing-overview
 
 ## Ref: 
 ### VM with Multiple IP Addresses 
@@ -802,13 +846,11 @@ It can collect data such as
     - Collect information on other Insights and solutions as well 
 
 **Dependency Agent** 
-This agent is used to collect the data that is discovered about the processes 
-running on the virtual machine. 
+This agent is used to collect the data that is discovered about the processes running on the virtual machine. 
 This requires the prior installation of the Log Analytics agent. 
 
 **Telegraf agent** 
-This is used to collect performance data from Linux computers and send it to 
-Azure Monitor metrics. 
+This is used to collect performance data from Linux computers and send it to Azure Monitor metrics. 
 
 ## Diagnostic Setting
 On a VM monitoring you can see the key metrics like CPU, Disk utilization and network.
@@ -893,7 +935,6 @@ Alerting
 We have already learnt on using services such as the Virtual Machine service. Now when using services it is important to understand that you have limits on how many resources you can create per service.
 
 Let's understand the limit we have for Virtual Machines
-
 1) First go to your subscriptions
 
 ![](https://img-c.udemycdn.com/redactor/raw/2020-04-13_05-19-43-c71bc0d1a009ea1125f70c1e15631181.jpg)

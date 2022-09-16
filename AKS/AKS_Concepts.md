@@ -197,7 +197,6 @@ https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/23-AKS
 - ACR is connected through service principle or directly attaching to the AKS
 - Azure monitor will be enabled by default if the cluster is created through portal.
    Azure monitor plugin should be enabled manually if cluster is created through CLI.
-
 - Load balancer is very important to have enough IPs or bandwidth for outbound traffic.
 - System assigned managed identity is super set of all other identity systems and is more recommended.
 
@@ -210,6 +209,13 @@ https://github.com/bhaaskara/azure-aks-kubernetes-masterclass/tree/master/23-AKS
 
 ## Node pools
 ![](Pasted%20image%2020220724153227.png)
+
+> **Windows Node Pool**
+> Remember to mention the User name/Password for the windows node pool while creating the cluster.
+> Otherwise you can't create or add a windows node pool later.
+> Only way is to delete the cluster and recreate.
+> **Virtual Node Pool**
+> is of only linux and uses Azure container instances.
 
 ## Deploy apps to different node pools
 ![](Pasted%20image%2020220724153454.png)
